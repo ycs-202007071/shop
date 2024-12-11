@@ -49,13 +49,13 @@ function Detail(props) {
 
       <Nav variant="tabs" defaultActiveKey="link0">
         <Nav.Item>
-          <Nav.Link eventKey="link0" onClick={setTap(0)}>버튼0</Nav.Link>
+          <Nav.Link eventKey="link0" onClick={()=>setTap(0)}>버튼0</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="link1" onClick={setTap(1)}>버튼1</Nav.Link>
+          <Nav.Link eventKey="link1" onClick={()=>setTap(1)}>버튼1</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="link2" onClick={setTap(2)}>버튼2</Nav.Link>
+          <Nav.Link eventKey="link2" onClick={()=>setTap(2)}>버튼2</Nav.Link>
         </Nav.Item>
       </Nav>
       <TapContent tap={tap}></TapContent>
