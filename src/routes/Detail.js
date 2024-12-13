@@ -60,16 +60,20 @@ function Detail(props) {
     </div>
   )
 }
-function TapContent(props){
-  if(props.tap==0){
-    return <div>내용0</div>
-  }
-  else if(props.tap==1){
-    return <div>내용1</div>
-  }
-  else if(props.tap==2){
-    return <div>내용2</div>
-  }
+function TapContent({tap}){
+
+  let [fade, setFade] = useState('')
+  
+  useEffect(()=>{
+    setTimeout(()=>{setFade('end')}, 10)
+    return()=>{
+      setFade('')
+    }
+  },[tap])
+
+  return (<div className={'start ' +  fade}>
+    {[<div>내용0</div>,<div>내용1</div>,<div>내용2</div>][tap]}
+    </div>)
 }
 
 export default Detail;
