@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {Nav} from 'react-bootstrap';
 
+import {Context1} from './../App.js'
+
 function Detail(props) {
+
   let [num, setNUm] = useState('')
   useEffect(() => {
     if (isNaN(num) == true) {
@@ -32,6 +35,8 @@ function Detail(props) {
             2초이내 구매시 할인
           </div> : null
       }
+
+
       <div className="row">
         <div className="col-md-6">
           <img src={"https://codingapple1.github.io/shop/shoes" + (result.id + 1) + ".jpg"} width="100%" />
@@ -63,6 +68,7 @@ function Detail(props) {
 function TapContent({tap}){
 
   let [fade, setFade] = useState('')
+ 
   
   useEffect(()=>{
     setTimeout(()=>{setFade('end')}, 10)
