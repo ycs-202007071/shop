@@ -22,10 +22,20 @@ function Detail(props) {
 
   let [showAlert, setShowAlert] = useState(true)
   let [tap, setTap] = useState(0)
-
-
   let { id } = useParams();
   let result = props.shoes.find((x) => x.id == id)
+
+
+  
+  useEffect(()=>{
+    let 꺼낸거 = localStorage.getItem('watched')
+    꺼낸거 = JSON.parse(꺼낸거)
+    꺼낸거.push(result.id)
+    꺼낸거 = new Set(꺼낸거)
+    꺼낸거 = Array.from(꺼낸거)
+    localStorage.setItem('watched', JSON.stringify(꺼낸거))
+  }, [])
+
 
   return (
     <div className="container">
@@ -36,7 +46,7 @@ function Detail(props) {
           </div> : null
       }
 
-
+      
       <div className="row">
         <div className="col-md-6">
           <img src={"https://codingapple1.github.io/shop/shoes" + (result.id + 1) + ".jpg"} width="100%" />

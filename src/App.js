@@ -1,32 +1,51 @@
 import './App.css';
 import { Button, Navbar, Container, Nav } from 'react-bootstrap'
 import bg from './img/bg.png';
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import data from './data';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
 import Detail from './routes/Detail.js'
 import Cart from './routes/Cart.js'
 import axios from 'axios'
+import { useQuery } from 'react-query';
 
 export let Context1 = createContext()
 
 function App() {
 
+  useEffect(() => {
+    if (localStorage.getItem('watched') == null) {
+      localStorage.setItem('watched', JSON.stringify([]))
+    }
+  })
+
   let [shoes, setShoes] = useState(data);
-  let [재고] = useState([10,11,12]);
+  let [재고] = useState([10, 11, 12]);
   let navigate = useNavigate();
   let [count, setCount] = useState(0);
+
+  let result = useQuery('작명', () => {
+    return axios.get('https://codingapple1.github.io/userdata.json').then((a) => {
+      console.log('요청됨')
+      return a.data
+    })
+  })
 
 
   return (
     <div>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="#home">ShoeShop</Navbar.Brand>
+          <Navbar.Brand onClick={() => { navigate('/') }}>ShoeShop</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link onClick={() => { navigate('/') }}>Home</Nav.Link>
             <Nav.Link onClick={() => { navigate('./detail') }}>detail</Nav.Link>
             <Nav.Link href="#pricing">Pricing</Nav.Link>
+          </Nav>
+          <Nav className="ms-auto">
+            {result.isLoading && '로딩중입니다.'}
+            {result.error && '에러남'}
+            {result.data && result.data.name}
           </Nav>
         </Container>
       </Navbar>
@@ -45,14 +64,14 @@ function App() {
                 }
               </div>
             </div>
-            {count<2 ?  <PlusButton shoes={shoes} count={count} setShoes={setShoes} setCount={setCount}/> :null}
-           
+            {count < 2 ? <PlusButton shoes={shoes} count={count} setShoes={setShoes} setCount={setCount} /> : null}
+
           </>
         } />
         <Route path="/detail/:id" element={
           <Detail shoes={shoes} />
-          } />//:id=url파라미터
-        <Route path="/cart" element={<Cart/>}></Route>
+        } />//:id=url파라미터
+        <Route path="/cart" element={<Cart />}></Route>
         <Route path="/about" element={<About />} >
           <Route path="member" element={<div>멤버임</div>} />
           <Route path="location" element={<div>위치정보임</div>} />
@@ -61,8 +80,6 @@ function App() {
           <Route path="one" element={<div>첫 주문시 양배추즙 서비스</div>} />
           <Route path="two" element={<div>생일기념 쿠폰받기</div>} />
         </Route>
-
-
         <Route path="*" element={<div>없는 페이지에용</div>} />
       </Routes>
 
@@ -95,8 +112,8 @@ function Card(props) {
   )
 }
 
-function PlusButton(props){
-  return(
+function PlusButton(props) {
+  return (
     <button onClick={() => {
       if (props.count === 0) {
         axios.get('https://codingapple1.github.io/shop/data2.json')
@@ -108,7 +125,7 @@ function PlusButton(props){
           .catch(() => {
 
           })
-      }else if (props.count === 1) {
+      } else if (props.count === 1) {
         axios.get('https://codingapple1.github.io/shop/data3.json')
           .then((결과) => {
             let copy = [...props.shoes, ...결과.data]
